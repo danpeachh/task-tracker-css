@@ -1,0 +1,953 @@
+body {
+    background-color: #FAF3EB;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    color: #333;
+}
+
+h4 {
+    text-align: center;
+    color: #F29E7D;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.table-wrapper.shifted-left {
+    margin-left: 320px;
+    width: calc(100% - 320px);
+}
+
+.table-wrapper.shifted-right {
+    margin-right: 400px;
+    width: calc(100% - 400px);
+}
+
+table {
+    background-color: #fff;
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: middle;
+    border-bottom: 1px solid #FBC4AB;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+th {
+    background-color: #FBC4AB;
+    color: #333;
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: #F7E8DD;
+    cursor: pointer;
+}
+
+td:nth-child(2) {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.side-panel {
+    position: fixed;
+    right: -400px;
+    top: 0;
+    width: 400px;
+    height: 100%;
+    background-color: #FAE5D3;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    transition: right 0.3s ease;
+    z-index: 9999;
+    border-left: 2px solid #E0C4A6;
+    overflow-y: auto;
+    border-radius: 10px 0 0 10px;
+}
+
+.side-panel.open {
+    right: 0;
+}
+
+input[type="text"]:disabled {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 100%;
+    /* Ensure consistent width */
+    font-size: 14px;
+    border-radius: 8px;
+    color: #666;
+    box-sizing: border-box;
+}
+
+.side-panel label {
+    color: #333;
+    margin-bottom: 8px;
+    top: 5px !important;
+    display: block;
+    position: relative !important;
+    margin-left: -12px !important;
+}
+
+.side-panel-content {
+    padding: 10px;
+}
+
+.side-panel-item {
+    margin-bottom: 16px;
+}
+
+
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #F08064;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #F29E7D;
+}
+
+.input-field {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+label {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    font-size: 14px;
+    color: #555;
+    padding: 0 5px;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+input[type="text"],
+textarea {
+    width: 100% !important;
+    box-sizing: border-box;
+    padding: 12px;
+}
+
+textarea {
+    width: 100% !important;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #FBC4AB;
+    background-color: #fff;
+    resize: vertical;
+    overflow-y: auto;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    border-color: #F29E7D;
+    outline: none;
+}
+
+textarea {
+    height: 150px !important;
+    resize: vertical;
+}
+
+.save-btn {
+    background-color: #F29E7D;
+    color: #fff;
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.save-btn:hover {
+    background-color: #F08064;
+}
+
+.save-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.save-btn.loading {
+    background-color: #ccc !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.loader {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.loader img {
+    width: 100%;
+    /* ✅ Responsive size */
+    height: auto;
+    animation: pulse 1.2s infinite ease-in-out;
+}
+
+/* ✅ Pulse Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+}
+
+.loader.show {
+    opacity: 1;
+}
+
+.switch-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 20px;
+    overflow: visible;
+    position: relative;
+}
+
+.switch {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #333;
+    gap: 8px;
+    background: none;
+    border: none;
+    white-space: nowrap;
+}
+
+.switch input[type="checkbox"] {
+    position: relative;
+    margin: 0;
+}
+
+.switch label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    pointer-events: all;
+    white-space: nowrap;
+    background: none;
+}
+
+.switch input[type="checkbox"]:checked+.lever {
+    background-color: #F29E7D;
+}
+
+.switch input[type="checkbox"]:checked+.lever::before {
+    background-color: #FFFFFF;
+}
+
+.switch .lever {
+    height: 20px;
+    background-color: #FBC4AB;
+}
+
+.switch .lever:hover {
+    background-color: #F7E8DD;
+}
+
+.header-with-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+
+.header-with-logo h4 {
+    margin: 0;
+    color: #F29E7D;
+    font-weight: 600;
+}
+
+.peach-logo {
+    height: 48px;
+    width: auto;
+    vertical-align: middle;
+}
+
+#toast-container {
+    top: 65% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    bottom: auto !important;
+    right: auto !important;
+}
+
+
+#tasksTable td {
+    vertical-align: middle;
+}
+
+
+body.dark-mode {
+    background-color: #1e1e1e;
+    color: #eee;
+}
+
+body.dark-mode table,
+body.dark-mode .side-panel {
+    background-color: #2a2a2a;
+    color: #eee;
+}
+
+body.dark-mode th {
+    background-color: #444;
+    color: #ffccbc;
+}
+
+body.dark-mode td {
+    border-bottom: 1px solid #555;
+}
+
+body.dark-mode .modal,
+body.dark-mode .modal-footer {
+    background-color: #2e2e2e;
+    color: #fff;
+}
+
+body.dark-mode .modal-footer .btn {
+    background-color: #F29E7D;
+    color: #fff;
+}
+
+body.dark-mode .switch .lever {
+    background-color: #555 !important;
+}
+
+body.dark-mode .switch input:checked+.lever {
+    background-color: #F29E7D !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: #3a3a3a;
+    color: #fff;
+    border: 1px solid #666;
+}
+
+body.dark-mode label {
+    color: #ccc !important;
+    background-color: transparent !important;
+}
+
+body.dark-mode .input-field input::placeholder,
+body.dark-mode .input-field textarea::placeholder {
+    color: #aaa;
+}
+
+body.dark-mode select {
+    background-color: #3a3a3a !important;
+    color: #fff !important;
+}
+
+body.dark-mode .dropdown-content li>span {
+    color: #000;
+}
+
+
+body.dark-mode #tasksTable tr:hover {
+    background-color: #3b3b3b !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode #tasksTable td {
+    background-color: transparent;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode #tasksTable th {
+    background-color: #444 !important;
+    color: #f2f2f2 !important;
+}
+
+body.dark-mode #toast-container .toast {
+    background-color: #444 !important;
+    color: #fff !important;
+}
+
+body.dark-mode .side-panel input[type="text"],
+body.dark-mode .side-panel textarea,
+body.dark-mode .side-panel input[type="date"] {
+
+    border: none !important;
+    border-bottom: 1px solid #777 !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode .side-panel select {
+    background-color: #2c2c2c !important;
+    color: #fff !important;
+}
+
+body.dark-mode .select-dropdown {
+    background-color: #2c2c2c !important;
+    color: #fff !important;
+    border: 1px solid #555 !important;
+}
+
+body.dark-mode .dropdown-content li>a,
+body.dark-mode .dropdown-content li>span {
+    color: #fff !important;
+    background-color: #2c2c2c !important;
+}
+
+body.dark-mode .dropdown-content li:hover {
+    background-color: #444 !important;
+}
+
+body.dark-mode input[type="date"] {
+    background-color: #2c2c2c !important;
+    color: #fff !important;
+    border: 1px solid #555 !important;
+}
+
+body.dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+body.dark-mode .modal-footer .btn-flat {
+    color: #f29e7d !important;
+    background-color: transparent !important;
+    border: none;
+}
+
+body.dark-mode .modal-footer .btn-flat:hover {
+    background-color: #444 !important;
+}
+
+
+body.dark-mode .modal-content {
+    background-color: #1f1f1f !important;
+    color: #fff !important;
+}
+
+body.dark-mode .modal-footer {
+    background-color: #2c2c2c !important;
+}
+
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#tasksTable,
+#tasksTable th,
+#tasksTable td {
+    font-size: 12px;
+}
+
+.input-field input[type="text"],
+.input-field input[type="date"],
+.input-field select,
+.input-field textarea {
+    margin-top: 12px;
+}
+
+
+.switch label .lever::before,
+.switch label .lever::after {
+    content: none !important;
+}
+
+#tasksTable .switch .lever {
+    background-color: #FBC4AB;
+    height: 24px;
+    width: 48px;
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+#tasksTable .switch .lever .ball-icon {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    transform: translateX(0);
+}
+
+#tasksTable .switch input:checked+.lever .ball-icon {
+    transform: translateX(24px);
+}
+
+.emoji-toggle-switch .lever {
+    background-color: #FBC4AB;
+    height: 24px;
+    width: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    position: relative;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.emoji-toggle-switch .ball-icon {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+.emoji-toggle-switch input:checked+.lever .ball-icon {
+    transform: translateX(24px);
+}
+
+.dark-mode-toggle-switch .lever {
+    background-color: #FBC4AB;
+    height: 24px;
+    width: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    position: relative;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+    pointer-events: all;
+}
+
+.dark-mode-toggle-switch .ball-icon {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+.dark-mode-toggle-switch input:checked+.lever .ball-icon {
+    transform: translateX(24px);
+}
+
+.dark-mode-toggle-switch input:checked+.lever {
+    background-color: #F29E7D;
+}
+
+#commentModal.modal {
+    max-height: unset !important;
+    /* or use a specific height like 80vh */
+    height: auto !important;
+}
+
+/* Dropdown styling to adjust width */
+#groupDropdown {
+    width: 100%;
+    /* Ensure dropdown takes full width */
+}
+
+#tasksTable {
+    table-layout: auto;
+    width: max-content;
+    min-width: 100%;
+}
+
+/* ✅ Shared styling for all status columns */
+#tasksTable th.status-col,
+#tasksTable td.status-col {
+    width: 80px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+#tasksTable td.status-col.true-cell,
+#tasksTable td.status-col.false-cell,
+#tasksTable td.status-col.na-cell,
+#tasksTable td.status-col {
+    color: white !important;
+}
+
+#tasksTable th.narrow-col,
+#tasksTable td.narrow-col {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+
+.na-cell {
+    background-color: #D3D3D3;
+    border: 1px solid white;
+}
+
+.true-cell {
+    background-color: #4CAF50;
+    border: 1px solid white;
+}
+
+.false-cell {
+    background-color: #F44336;
+    border: 1px solid white;
+}
+
+.file-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #F29E7D;
+    font-weight: bold;
+    margin-top: 6px;
+    word-wrap: break-word;
+}
+
+.file-link:hover {
+    color: #F08064;
+    text-decoration: underline;
+}
+
+.file-name-text {
+    display: block;
+    max-width: 100%;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+/* Hide the Tool # column */
+#tasksTable th:nth-child(1),
+/* Hide header of Tool # column */
+#tasksTable td:nth-child(1) {
+    /* Hide data cells of Tool # column */
+    display: none;
+}
+
+.image-drop-zone {
+    border: 2px dashed #f29e7d;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: #fff5ef;
+    color: #f08064;
+    cursor: pointer;
+    min-height: 140px;
+    /* Increased height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    font-size: 14px;
+}
+
+.image-drop-zone.dragover {
+    background-color: #fde3d7;
+}
+
+.image-upload-loader {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+    color: #f29e7d;
+    display: none;
+}
+
+.fullscreen-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+}
+
+.fullscreen-overlay img {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+    box-shadow: 0 0 15px #fff;
+    border-radius: 6px;
+}
+
+/* ✅ Prevent dark mode override for status cells */
+body.dark-mode #tasksTable td.true-cell {
+    background-color: #4CAF50 !important;
+    color: #fff !important;
+}
+
+body.dark-mode #tasksTable td.false-cell {
+    background-color: #F44336 !important;
+    color: #fff !important;
+}
+
+body.dark-mode #tasksTable td.na-cell {
+    background-color: #D3D3D3 !important;
+    color: #333 !important;
+}
+
+.highlight-assignee {
+    background-color: #FFF2CC;
+    /* Light yellow */
+    font-weight: bold;
+    color: #C67100;
+    /* Orange-brown */
+}
+
+body.dark-mode .highlight-assignee {
+    background-color: #665500 !important;
+    color: #ffcc66 !important;
+}
+
+/* Style the Materialize select to match other inputs */
+.select-wrapper input.select-dropdown {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 10px 10px !important;
+    /* reduce side padding */
+    border: 1px solid #FBC4AB !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    height: 44px !important;
+    background-color: #fff !important;
+    color: #333 !important;
+}
+
+
+.select-wrapper input.select-dropdown:focus {
+    border-color: #F29E7D;
+    outline: none;
+}
+
+.dropdown-content li>span {
+    color: #333;
+    font-size: 14px;
+}
+
+body.dark-mode .select-wrapper input.select-dropdown {
+    background-color: #3a3a3a;
+    color: #fff;
+    border: 1px solid #666;
+}
+
+body.dark-mode .dropdown-content li>span {
+    color: #fff !important;
+    background-color: #2c2c2c !important;
+}
+
+body.dark-mode .dropdown-content li:hover {
+    background-color: #444 !important;
+}
+
+.peach-nav-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding: 32px 16px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.peach-nav-bar li {
+    padding: 1rem 2rem 1.15rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #f08064;
+    font-weight: 600;
+    font-size: 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background-color: transparent;
+    min-width: 120px;
+    text-align: center;
+}
+
+.peach-nav-bar li:hover {
+    background-image: url('https://scottyzen.sirv.com/Images/v/button.png');
+    background-size: 100% 100%;
+    color: #fff;
+    animation: spring 300ms ease-out;
+    text-shadow: 0 -1px 0 #ef816c;
+    font-weight: bold;
+}
+
+.peach-nav-bar li:active {
+    transform: translateY(4px);
+
+}
+
+.peach-nav-bar li.active {
+    background-color: #FBC4AB;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: none;
+    background-image: url('https://scottyzen.sirv.com/Images/v/button.png');
+    background-size: 100% 100%;
+}
+
+@keyframes spring {
+    15% {
+        transform-origin: center center;
+        transform: scale(1.2, 1.1);
+    }
+
+    40% {
+        transform: scale(0.95, 0.95);
+    }
+
+    75% {
+        transform: scale(1.05, 1);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+/* 🌙 Dark Mode Support */
+body.dark-mode {
+    background-color: #1E1F25;
+}
+
+body.dark-mode .peach-nav-bar li {
+    color: #ffe5d0;
+}
+
+body.dark-mode .peach-nav-bar li.active {
+    background-color: #F29E7D;
+    color: #fff;
+}
+
+/* Filters row look & feel */
+.filter-row input,
+.filter-row .select-wrapper input.select-dropdown {
+    color: #333 !important;
+    background-color: #fff !important;
+    font-size: 12px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    padding: 4px 6px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    box-sizing: border-box;
+}
+
+.filter-row input::placeholder {
+    color: #666;
+}
+
+/* Let filter row cells show overflow and position menus correctly */
+#tasksTable thead tr.filter-row th {
+    overflow: visible !important;
+    position: relative;
+    z-index: 2;
+    /* sit above table body */
+}
+
+
+/* Make Materialize select fill the header cell neatly */
+#tasksTable thead tr.filter-row .select-wrapper {
+    width: 100% !important;
+    display: block;
+    min-width: 120px;
+    /* tweak as you like */
+}
+
+/* The fake input Materialize injects */
+#tasksTable thead tr.filter-row .select-wrapper input.select-dropdown {
+    height: 30px !important;
+    line-height: 30px !important;
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+    background: #fff !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+}
+
+/* Materialize appends menus to <body>. Make sure they float on top. */
+.dropdown-content {
+    z-index: 10010 !important;
+}
